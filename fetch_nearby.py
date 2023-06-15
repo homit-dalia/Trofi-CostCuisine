@@ -9,7 +9,7 @@ f.close()
 
 
 location = ['21.229260919850972', '72.77912414622021']   #lat long
-radius = '3000'   #meters
+radius = '1000'   #meters
 
 
 url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location[0]}%2C{location[1]}&radius={radius}&type=restaurant&key={api_key}"
@@ -18,8 +18,8 @@ url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={l
 
 payload={}
 headers = {}
-
 response = []
+
 response.append(json.loads(requests.request("GET", url, headers=headers, data=payload).text)['results'])
 
 #implement logic to fetch a total of 100 nearby restaurants. One request fetches 20.  
@@ -29,6 +29,7 @@ response.append(json.loads(requests.request("GET", url, headers=headers, data=pa
 
 for collection in response:
     for place in collection:
+        print(place['business_status'])
         try:
             print(place['name'])
         except:
