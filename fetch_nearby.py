@@ -25,25 +25,39 @@ response.append(json.loads(requests.request("GET", url, headers=headers, data=pa
 #implement logic to fetch a total of 100 nearby restaurants. One request fetches 20.  
 # Visit https://developers.google.com/calendar/api/guides/pagination
 
-
+output = {}
+output['results'] = []
+output['total'] = 0
 
 for collection in response:
     for place in collection:
-        print(place['business_status'])
-        try:
-            print(place['name'])
-        except:
-            continue
-        try:
-            print(str(place['rating']) + " - average rating from " + str(place['user_ratings_total']) + " reviews")
-        except:
-            print("Rating not found")
-        try:
-            print(place['price_level'])
-        except:
-            print("Price level not found")
-        print('##\n')
+        if(place['business_status'] == 'OPERATIONAL'):
+            temp = {}
+            try:
+                temp['name'] = place['name']
+                print(place['name'])
+            except:
+                continue
+            try:
+                temp['rating'] = place['rating']
+                temp['user_ratings_total'] = place['user_ratings_total']
 
+                print(str(place['rating']) + " - average rating from " + str(place['user_ratings_total']) + " reviews")
+            except:
+                temp['rating'] = None
+                temp['user_ratings_total'] = None
 
+                print("Rating not found")
+            try:
+                temp['price_level'] = place['price_level']
+                print(place['price_level'])
+            except:
+                temp['price_level'] = None
+                print("Price level not found")
+            output['results'].append(temp)
+            output['total'] += 1
+            print('##\n')
+
+print(output)
 
 
